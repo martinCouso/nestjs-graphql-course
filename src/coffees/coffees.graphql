@@ -1,0 +1,61 @@
+"""Create Coffee Input Object Type, like a DTO."""
+scalar Date
+
+interface Drink {
+    name: String!
+}
+
+enum CoffeeType {
+    TYPE_1
+    TYPE_2
+}
+
+type Tea implements Drink {
+    name: String!
+}
+
+union DrinksResult = Tea | Coffee
+
+input CreateCoffeeInput {
+    name: String!
+    brand: String!
+    flavors: [String!]!
+    type: CoffeeType!
+}
+
+input UpdateCoffeeInput {
+    name: String
+    brand: String
+    flavors: [String!]
+    type: CoffeeType
+}
+
+type Coffee implements Drink{
+    id: ID!
+    name: String!
+    brand: String!
+    flavors: [Flavor!]
+    createdAt: Date
+    type: CoffeeType
+}
+
+type Query {
+    coffees: [Coffee!]!
+    coffee(id: ID!): Coffee
+    drinks: [DrinksResult!]!
+}
+
+type Mutation {
+    createCoffee(createCoffeeInput: CreateCoffeeInput) : Coffee
+    updateCoffee(id: ID!, updateCoffeeInput: UpdateCoffeeInput) : Coffee
+    deleteCoffee(id:ID!): Coffee
+}
+
+type Subscription {
+    addedCoffee : Coffee!
+}
+
+type Flavor {
+    id: ID!
+    name: String
+}
